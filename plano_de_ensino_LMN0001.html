@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plano de Ensino | LMN0001</title>
+    <style>
+        :root {
+            --primary: #0A3D62;
+            --secondary: #3C6382;
+            --accent: #079992;
+            --bg-color: #F8F9FA;
+            --text-color: #2C3E50;
+            --text-light: #7F8C8D;
+            --card-bg: #FFFFFF;
+            --border-color: #E2E8F0;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header h2 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+        
+        .header p.institution {
+            font-size: 0.95rem;
+            margin-top: 15px;
+            color: #D9E2EC;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .grid-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .info-card {
+            background: var(--card-bg);
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            white-space: nowrap; /* Impede a quebra de linha */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .info-card strong {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+        
+        .info-card span {
+            font-size: 0.9rem; /* Fonte menor */
+            font-weight: 600;
+            color: var(--primary);
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .info-card a {
+            text-decoration: none;
+        }
+        
+        .section {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        
+        .section h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section h3::before {
+            content: "•";
+            color: var(--accent);
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .goals-list {
+            list-style-position: inside;
+            margin-top: 15px;
+        }
+        
+        .goals-list li {
+            margin-bottom: 12px;
+            padding-left: 10px;
+        }
+        
+        .goals-list li strong {
+            color: var(--secondary);
+        }
+        
+        /* Table Styles */
+        .table-responsive {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        th {
+            background-color: #F1F5F9;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background-color: #F8FAFC;
+        }
+        
+        .td-hours {
+            text-align: center;
+            font-weight: bold;
+            color: var(--accent);
+            width: 120px;
+        }
+        
+        /* Accordion for descriptions */
+        .accordion {
+            margin-top: 20px;
+        }
+        
+        details {
+            margin-bottom: 10px;
+            background-color: #F8FAFC;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        summary {
+            padding: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            transition: background-color 0.2s ease;
+        }
+        
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        
+        summary::after {
+            content: "+";
+            color: var(--accent);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        details[open] summary {
+            background-color: #F1F5F9;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        details[open] summary::after {
+            content: "−";
+        }
+        
+        .details-content {
+            padding: 15px;
+        }
+        
+        .sub-topic {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        
+        .sub-topic:last-child {
+            border-bottom: none;
+        }
+        
+        .book-item {
+            padding: 12px 15px;
+            background: #F8FAFC;
+            border-left: 3px solid var(--secondary);
+            margin-bottom: 10px;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .book-item strong {
+            color: var(--primary);
+        }
+        
+        .highlight-box {
+            background-color: #E6FFFA;
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        
+        a {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>Laboratório de Métodos Numéricos</h1>
+        <h2>Engenharia Elétrica — Turma 2026/2</h2>
+        <p class="institution">Universidade do Estado de Santa Catarina (UDESC)<br>Centro de Ciências Tecnológicas (CCT) — Depto. de Matemática</p>
+    </header>
+
+    <div class="container">
+        <!-- Info Cards -->
+        <div class="grid-info">
+            <div class="info-card">
+                <strong>Código</strong>
+                <span>LMN0001</span>
+            </div>
+            <div class="info-card">
+                <strong>Carga Horária</strong>
+                <span>72 horas</span>
+            </div>
+            <div class="info-card">
+                <strong>Professor</strong>
+                <span>Fernando Deeke Sasse</span>
+            </div>
+            <div class="info-card">
+                <strong>Contato</strong>
+                <span><a href="mailto:fernando.sasse@udesc.br">fernando.sasse@udesc.br</a></span>
+            </div>
+        </div>
+
+        <!-- Ementa e Objetivos -->
+        <div class="section">
+            <h3>Sobre a Disciplina</h3>
+            <p><strong>Ementa:</strong> Erros. Zeros de funções. Sistemas Lineares e não-lineares. Interpolação. Métodos numéricos para solução de equações diferenciais. Teoria de Aproximação e Integração Numérica.</p>
+            
+            <h4 style="margin-top: 20px; color: var(--secondary);">Objetivo Geral</h4>
+            <p>Introduzir os conhecimentos de métodos numéricos de álgebra linear e cálculo, envolvendo teoria e implementações computacionais.</p>
+            
+            <h4 style="margin-top: 20px; color: var(--secondary);">Objetivos Específicos</h4>
+            <p>Ao ter completado a disciplina com sucesso, o estudante deverá dominar os seguintes tópicos:</p>
+            <ul class="goals-list">
+                <li><strong>Programação estruturada:</strong> Entender os conceitos básicos de programação estruturada envolvendo tomadas de decisão, loops, funções e parâmetros implementados em uma linguagem de programação numérica.</li>
+                <li><strong>Métodos numéricos:</strong> Entender os métodos numéricos mais comuns usados na computação científica: solução de sistemas de equações lineares e não lineares, interpolação polinomial, ajustes, diferenciação e integração numérica, equações diferenciais ordinárias. O estudante deverá saber quando usar cada método e como implementar os métodos básicos de maneira estruturada usando uma linguagem de programação.</li>
+                <li><strong>Acurácia numérica:</strong> Estimar o erro inerente aos diversos métodos numéricos.</li>
+                <li><strong>Eficiência numérica:</strong> Estimar a eficiência de um método numérico específico quando mais de uma opção está disponível para resolver uma certa classe de problemas.</li>
+                <li><strong>Estabilidade numérica:</strong> Entender as propriedades de convergência e as limitações dos diversos métodos numéricos.</li>
+            </ul>
+        </div>
+
+        <!-- Conteúdo Programático Resumido -->
+        <div class="section">
+            <h3>Conteúdo Programático</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Unidade / Tópico</th>
+                            <th class="td-hours">Carga Horária</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1. Erros na computação numérica e aritmética computacional</td><td class="td-hours">4 h</td></tr>
+                        <tr><td>2. Zeros de equações algébricas</td><td class="td-hours">4 h</td></tr>
+                        <tr><td>3. Sistemas de equações lineares: métodos diretos</td><td class="td-hours">4 h</td></tr>
+                        <tr><td>4. Sistemas de equações lineares: métodos iterativos</td><td class="td-hours">4 h</td></tr>
+                        <tr><td>5. Sistemas de equações não lineares: método de Newton</td><td class="td-hours">2 h</td></tr>
+                        <tr><td>6. Aplicações em engenharia I</td><td class="td-hours">2 h</td></tr>
+                        <tr style="background-color: #FFF3CD; font-weight: bold;"><td>Prova 1</td><td class="td-hours">2 h</td></tr>
+                        <tr><td>7. Interpolação</td><td class="td-hours">6 h</td></tr>
+                        <tr><td>8. Diferenciação numérica</td><td class="td-hours">4 h</td></tr>
+                        <tr><td>9. Ajuste de curvas</td><td class="td-hours">4 h</td></tr>
+                        <tr><td>10. Integração numérica</td><td class="td-hours">6 h</td></tr>
+                        <tr><td>11. Aplicações em engenharia II</td><td class="td-hours">2 h</td></tr>
+                        <tr style="background-color: #FFF3CD; font-weight: bold;"><td>Prova 2</td><td class="td-hours">2 h</td></tr>
+                        <tr><td>12. Problemas de Valor Inicial (EDOs)</td><td class="td-hours">10 h</td></tr>
+                        <tr><td>13. Problemas de Valor de Contorno (EDOs)</td><td class="td-hours">10 h</td></tr>
+                        <tr><td>14. Aplicações em engenharia III</td><td class="td-hours">2 h</td></tr>
+                        <tr style="background-color: #FFF3CD; font-weight: bold;"><td>Prova 3</td><td class="td-hours">2 h</td></tr>
+                        <tr style="background-color: #D1E7DD; font-weight: bold;"><td>Prova Recuperativa</td><td class="td-hours">2 h</td></tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th style="text-align: right; font-size: 1.1em;">TOTAL DA DISCIPLINA</th>
+                            <th class="td-hours" style="font-size: 1.1em;">72 h</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- Descrição Detalhada -->
+        <div class="section">
+            <h3>Descrição Detalhada das Unidades</h3>
+            <p style="margin-bottom: 15px; color: var(--text-light);">Clique nas unidades abaixo para expandir e ver os tópicos detalhados.</p>
+            
+            <div class="accordion">
+                <details>
+                    <summary>1. Erros na Computação Numérica e Aritmética Computacional (4h)</summary>
+                    <div class="details-content">
+                        <div class="sub-topic"><span>1.1 Erros computacionais: erros de arredondamento e de truncamento; análise de erro em operações aritméticas.</span> <strong>2h</strong></div>
+                        <div class="sub-topic"><span>1.2 Aritmética de ponto flutuante: sistema de ponto flutuante, padrão IEEE 754 e fórmula de Taylor com resto de Lagrange.</span> <strong>2h</strong></div>
+                    </div>
+                </details>
+                
+                <details>
+                    <summary>2. Zeros de Equações Algébricas (4h)</summary>
+                    <div class="details-content">
+                        <div class="sub-topic"><span>2.1 Método da bissecção e métodos de ponto fixo: heurística, algoritmo e análise de convergência.</span> <strong>2h</strong></div>
+                        <div class="sub-topic"><span>2.2 Método de Newton-Raphson e método da secante: dedução geométrica, exemplos e análise de convergência.</span> <strong>2h</strong></div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>3. Sistemas de Equações Lineares — Métodos Diretos (4h)</summary>
+                    <div class="details-content">
+                        <div class="sub-topic"><span>3.1 Eliminação de Gauss simples e com pivotação parcial de linhas e com escalas.</span> <strong>2h</strong></div>
+                        <div class="sub-topic"><span>3.2 Fatoração LU (métodos de Doolittle e de Crout), inversão de matrizes, normas matriciais e número de condição.</span> <strong>2h</strong></div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>4. Sistemas de Equações Lineares — Métodos Iterativos (4h)</summary>
+                    <div class="details-content">
+                        <div class="sub-topic"><span>4.1 Método iterativo de Jacobi: descrição, convergência e implementação computacional.</span> <strong>2h</strong></div>
+                        <div class="sub-topic"><span>4.2 Método iterativo de Gauss-Seidel: introdução, exemplos e análise de convergência.</span> <strong>2h</strong></div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>5. Sistemas de Equações Não Lineares (2h)</summary>
+                    <div class="details-content">
+                        <div class="sub-topic"><span>5.1 Método de Newton para sistemas não lineares.</span> <strong>2h</strong></div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>6. Aplicações em Engenharia I (2h)</summary>
+                    <div class="details-content">
+                        <div class="sub-topic"><span>6.1 Aplicações zeros de funções e sistemas de equações lineares e não lineares a problemas de engenharia.</span> <strong>2h</strong></div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>7. Interpolação (6h)</summary>
+                    <div class="details-content">
+                        <div class="sub-topic"><span>7.1 Interpolação linear, funções de base e interpolação de Lagrange.</span> <strong>2h</strong></div>
+                        <div class="sub-topic"><span>7.2 Interpolação de Newton e diferenças divididas: definição, tabela, grau do polinômio e erro.</span> <strong>2h</strong></div>
+                        <div class="sub-topic"><span>7.3 Pontos de Chebyshev, fenômeno de Runge e splines quadráticos e cúbicos.</span> <strong>2h</strong></div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>8. Diferenciação Numérica (4h)</summary>
+                    <div class="details-content">
+                        <div class="sub-topic"><span>8.1 Aproximação por diferenças finitas para primeira e segunda derivada.</span> <strong>2h</strong></div>
+                        <div class="sub-topic"><span>8.2 Extrapolação de Richardson.</span> <strong>2h</strong></div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>9. Ajuste de Curvas (4h)</summary>
+                    <div class="details-content">
+                        <div class="sub-topic"><span>9.1 Método dos mínimos quadrados: ajuste de reta, regressão linear e ajuste de função.</span> <strong>2h</strong></div>
+                        <div class="sub-topic"><span>9.2 Regressão linear com gradientes descendentes.</span> <strong>2h</strong></div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>10. Integração Numérica (6h)</summary>
+                    <div class="details-content">
+                        <div class="sub-topic"><span>10.1 Método trapezoidal para integração numérica.</span> <strong>2h</strong></div>
+                        <div class="sub-topic"><span>10.2 Métodos de Simpson-Kepler 1/3 e 3/8: dedução e fórmula de erro.</span> <strong>2h</strong></div>
+                        <div class="sub-topic"><span>10.3 Método trapezoidal recursivo, método de Romberg e quadratura gaussiana.</span> <strong>2h</strong></div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>11. Aplicações em Engenharia II (2h)</summary>
+                    <div class="details-content">
+                        <div class="sub-topic"><span>11.1 Aplicações de interpolação, diferenciação numérica, ajuste de curvas e integração numérica a problemas de engenharia.</span> <strong>2h</strong></div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>12. Problemas de Valor Inicial - EDOs (10h)</summary>
+                    <div class="details-content">
+                        <div class="sub-topic"><span>12.1 Métodos de Euler explícito e implícito: erros e estabilidade.</span> <strong>2h</strong></div>
+                        <div class="sub-topic"><span>12.2 Método do ponto central; métodos de Runge-Kutta de 2ª e 4ª ordem.</span> <strong>2h</strong></div>
+                        <div class="sub-topic"><span>12.3 Métodos de passo múltiplo: Adams-Bashforth, Adams-Moulton e método preditor-corretor.</span> <strong>2h</strong></div>
+                        <div class="sub-topic"><span>12.4 Método da série de Taylor; implementações computacionais e comandos dos sistemas.</span> <strong>2h</strong></div>
+                        <div class="sub-topic"><span>12.5 Análise geral de erros e estabilidade; sistemas de equações diferenciais ordinárias e equações rígidas.</span> <strong>2h</strong></div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>13. Problemas de Valor de Contorno - EDOs (10h)</summary>
+                    <div class="details-content">
+                        <div class="sub-topic"><span>13.1 Problema de Sturm-Liouville e método do tiro.</span> <strong>2h</strong></div>
+                        <div class="sub-topic"><span>13.2 Método de diferenças finitas.</span> <strong>2h</strong></div>
+                        <div class="sub-topic"><span>13.3 Método de Rayleigh-Ritz.</span> <strong>2h</strong></div>
+                        <div class="sub-topic"><span>13.4 Método da colocação.</span> <strong>2h</strong></div>
+                        <div class="sub-topic"><span>13.5 Método de Galerkin e método dos elementos finitos.</span> <strong>2h</strong></div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>14. Aplicações em Engenharia III (2h)</summary>
+                    <div class="details-content">
+                        <div class="sub-topic"><span>14.1 Aplicações de métodos numéricos para equações diferenciais ordinárias a problemas de engenharia.</span> <strong>2h</strong></div>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <!-- Metodologia e Avaliação -->
+        <div class="section">
+            <h3>Metodologia e Sistema de Avaliação</h3>
+            
+            <div class="highlight-box">
+                <h4 style="color: var(--primary); margin-bottom: 5px;">Metodologia</h4>
+                <p>Aulas presenciais. Em cada aula, as exposições teóricas serão complementadas com implementações computacionais em <strong>Maple</strong> e <strong>Python</strong> e aplicações.</p>
+            </div>
+            
+            <div class="highlight-box" style="background-color: #EBF4FF; border-left-color: var(--secondary);">
+                <h4 style="color: var(--primary); margin-bottom: 5px;">Sistema de Avaliação</h4>
+                <p>Três provas presenciais de igual peso e uma prova recuperativa no final do semestre, cuja nota substitui a menor nota das três provas realizadas no semestre.</p>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li><strong>Prova 1:</strong> Erros, zeros de funções e sistemas de equações lineares e não lineares.</li>
+                    <li><strong>Prova 2:</strong> Interpolação, diferenciação numérica, ajuste de curvas e integração numérica.</li>
+                    <li><strong>Prova 3:</strong> Métodos numéricos para equações diferenciais ordinárias.</li>
+                </ul>
+            </div>
+
+            <h4 style="margin-top: 25px; color: var(--secondary);">Informações sobre Realização de Prova de 2ª Chamada</h4>
+            <p style="font-size: 0.95em;">A Resolução nº 018/2004-CONSEPE regulamenta o processo de realização de provas de segunda chamada. O aluno que deixar de comparecer a qualquer das avaliações poderá solicitar segunda chamada na Secretaria Acadêmica, mediante requerimento assinado e comprovante de pagamento da taxa, no <strong>prazo de 5 (cinco) dias úteis</strong>.</p>
+            <p style="font-size: 0.95em; margin-top: 10px;">São aceitos pedidos devidamente comprovados, motivados por:</p>
+            <ol style="margin-top: 10px; margin-left: 20px; font-size: 0.95em;">
+                <li>Problema de saúde, devidamente comprovado, que justifique a ausência;</li>
+                <li>Doença de caráter infectocontagioso, impeditiva do comparecimento, comprovada por atestado médico reconhecido na forma da lei, constando o Código Internacional de Doenças (CID);</li>
+                <li>Ter sido vítima de ação involuntária provocada por terceiros.</li>
+            </ol>
+        </div>
+
+        <!-- Bibliografia -->
+        <div class="section">
+            <h3>Bibliografia</h3>
+            
+            <h4 style="color: var(--secondary); margin-bottom: 15px;">Bibliografia Básica</h4>
+            <div class="book-item">
+                <strong>CHENEY, E. W.; KINCAID, David.</strong> Numerical mathematics and computing. 7th ed. Boston, MA: Brooks/Cole, 2013. ISBN 9781133103714.
+            </div>
+            <div class="book-item">
+                <strong>BURDEN, Richard L.</strong> Análise numérica. 3. ed. São Paulo: Cengage Learning, 2016. ISBN 9788522123414.
+            </div>
+            <div class="book-item">
+                <strong>FRANCO, Neide Bertoldi.</strong> Cálculo numérico. São Paulo: Prentice-Hall, 2007. ISBN 8576050870.
+            </div>
+
+            <h4 style="color: var(--secondary); margin: 25px 0 15px 0;">Bibliografia Complementar</h4>
+            <div class="book-item" style="border-left-color: var(--accent);">
+                <strong>Programas em Maple e Python:</strong> <a href="https://sites.google.com/view/can-udesc/home" target="_blank">https://sites.google.com/view/can-udesc/home</a>
+            </div>
+            <div class="book-item" style="border-left-color: var(--accent);">
+                <strong>CHAPRA, Steven C.; CANALE, Raymond P.</strong> Métodos numéricos para engenharia. 7. ed. Porto Alegre: AMGH, 2016. ISBN 9788580555684.
+            </div>
+            <div class="book-item" style="border-left-color: var(--accent);">
+                <strong>ALBRECHT, P.</strong> Análise numérica: um curso moderno. Rio de Janeiro: LTC, 1973.
+            </div>
+            <div class="book-item" style="border-left-color: var(--accent);">
+                <strong>GILAT, Amos; SUBRAMANIAM, Vish.</strong> Numerical methods for engineers and scientists. Wiley, 2008. ISBN 9780471734406.
+            </div>
+            <div class="book-item" style="border-left-color: var(--accent);">
+                <strong>LAY, David C.; LAY, Steven R.; MCDONALD, Judi J.</strong> Álgebra linear e suas aplicações. Rio de Janeiro: LTC, 2024. ISBN 9788521638803.
+            </div>
+            <div class="book-item" style="border-left-color: var(--accent);">
+                <strong>LANGTANGEN, Hans Petter.</strong> Python scripting for computational science. Berlin: Springer, 2008. ISBN 9783540739166.
+            </div>
+            <div class="book-item" style="border-left-color: var(--accent);">
+                <strong>RALSTON, Anthony; RABINOWITZ, Philip.</strong> A first course in numerical analysis. 2. ed. New York: Dover, 2001. ISBN 048641454x.
+            </div>
+            <div class="book-item" style="border-left-color: var(--accent);">
+                <strong>LANDAU, Rubin H.; PÁEZ MEJÍA, Manuel José; BORDEIANU, Cristian C.</strong> Computational physics: problem solving with computers. 2nd ed. Wiley-VCH, 2007. ISBN 9783527406265.
+            </div>
+        </div>
+    </div>
+</body>
+</html>

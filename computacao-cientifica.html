@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Computação Científica — notas, notebooks e referências</title>
+<meta name="description" content="Notas de aula, notebooks em Python e Maple e referências sobre métodos numéricos e algébricos: ponto flutuante, raízes, sistemas lineares e não lineares, interpolação, integração e equações diferenciais.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1B1B2F;
+  --slate:#5A5C74;
+  --paper:#F7F8FC;
+  --card:#FFFFFF;
+  --peri:#6C6FD4;
+  --peri-deep:#4A4DA8;
+  --lav:#E4E2F6;
+  --sky:#CFE3F5;
+  --moss:#4E8A5C;
+  --rule:#D8DAEA;
+
+  --display:"Spectral",Georgia,"Times New Roman",serif;
+  --body:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--peri-deep);text-decoration:none;border-bottom:1px solid rgba(108,111,212,.35)}
+a:hover{border-bottom-color:var(--peri)}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--peri);outline-offset:3px;border-radius:2px}
+
+/* ---------- cabeçalho ---------- */
+.masthead{
+  background:linear-gradient(180deg,#EEF0FA 0%,var(--paper) 100%);
+  border-bottom:1px solid var(--rule);
+}
+.masthead-inner{max-width:1120px;margin:0 auto;padding:52px 28px 38px}
+.eyebrow{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--peri-deep);margin:0 0 14px;
+}
+.masthead h1{
+  font-family:var(--display);font-weight:600;font-size:clamp(2.3rem,6vw,3.6rem);
+  line-height:1.04;letter-spacing:-.02em;margin:0 0 12px;
+}
+.deck{
+  font-family:var(--display);font-style:italic;font-weight:300;
+  font-size:clamp(1.05rem,2.4vw,1.35rem);color:var(--slate);margin:0 0 26px;max-width:54ch;
+}
+.sequence{
+  font-family:var(--mono);font-size:.85rem;color:var(--peri-deep);
+  background:var(--lav);display:inline-block;padding:7px 14px;border-radius:3px;
+}
+.sequence .goal{color:var(--moss);font-weight:500}
+
+/* ---------- estrutura ---------- */
+.shell{
+  max-width:1120px;margin:0 auto;padding:0 28px 90px;
+  display:grid;grid-template-columns:236px 1fr;gap:52px;align-items:start;
+}
+
+/* ---------- navegação lateral ---------- */
+.sidenav{position:sticky;top:26px;padding-top:38px}
+.sidenav h2{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--slate);margin:0 0 14px;font-weight:500;
+}
+.sidenav ol{list-style:none;margin:0;padding:0;border-left:1px solid var(--rule)}
+.sidenav a{
+  display:flex;gap:10px;padding:6px 0 6px 14px;margin-left:-1px;
+  border-left:2px solid transparent;border-bottom:0;
+  font-size:.875rem;line-height:1.35;color:var(--slate);
+  transition:color .15s ease,border-color .15s ease,padding-left .15s ease;
+}
+.sidenav a:hover{color:var(--peri-deep);border-left-color:var(--peri);padding-left:18px}
+.sidenav .k{font-family:var(--mono);font-size:.75rem;color:var(--peri);flex:none;padding-top:1px}
+
+/* ---------- conteúdo ---------- */
+.main{padding-top:38px;min-width:0}
+section{margin:0 0 52px;scroll-margin-top:24px}
+.h{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--slate);font-weight:500;margin:0 0 16px;
+  padding-bottom:8px;border-bottom:1px solid var(--rule);
+}
+p{margin:0 0 14px;max-width:68ch}
+.lead{font-size:1.02rem}
+
+/* ---------- nota destacada ---------- */
+.aside{
+  background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--peri);
+  border-radius:4px;padding:18px 20px;font-size:.94rem;
+}
+.aside p:last-child{margin-bottom:0}
+
+/* ---------- trilha de tópicos (elemento-assinatura) ---------- */
+.trilha{list-style:none;margin:0;padding:0;position:relative}
+.trilha::before{
+  content:"";position:absolute;left:26px;top:14px;bottom:14px;width:1px;
+  background:linear-gradient(180deg,var(--rule) 0%,var(--peri) 55%,var(--moss) 100%);
+}
+.step{position:relative;padding:0 0 4px}
+.step > a{
+  display:grid;grid-template-columns:54px 1fr;gap:16px;align-items:start;
+  padding:13px 14px 13px 0;border-bottom:1px solid #EDEFF7;
+  color:inherit;transition:background .15s ease,transform .15s ease;border-radius:3px;
+}
+.step:last-child > a{border-bottom:0}
+.step > a:hover{background:#F1F2FB;transform:translateX(3px)}
+.step .k{
+  font-family:var(--mono);font-size:.8rem;color:var(--peri);text-align:right;padding-top:3px;
+}
+.step .title{font-family:var(--display);font-size:1.12rem;font-weight:600;line-height:1.25;margin-bottom:3px;display:block}
+.step .gloss{font-size:.88rem;color:var(--slate);line-height:1.45;display:block}
+.tag{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;
+  padding:2px 7px;border-radius:2px;margin-left:8px;vertical-align:2px;white-space:nowrap;
+}
+.tag-py{background:var(--sky);color:#1D4E72}
+.tag-mp{background:var(--lav);color:var(--peri-deep)}
+
+/* ---------- blocos recolhíveis ---------- */
+details{border:1px solid var(--rule);border-radius:4px;background:var(--card);margin-bottom:12px}
+summary{
+  cursor:pointer;padding:14px 18px;font-family:var(--body);font-weight:500;font-size:.95rem;
+  list-style:none;display:flex;justify-content:space-between;align-items:center;
+}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--mono);color:var(--peri);font-size:1.05rem}
+details[open] summary::after{content:"–"}
+details[open] summary{border-bottom:1px solid var(--rule)}
+.details-body{padding:16px 18px 18px}
+.refs{list-style:none;counter-reset:r;margin:0;padding:0}
+.refs li{counter-increment:r;position:relative;padding:9px 0 9px 34px;font-size:.9rem;line-height:1.5;border-top:1px solid #F0F1F8}
+.refs li:first-child{border-top:0}
+.refs li::before{content:counter(r,decimal-leading-zero);position:absolute;left:0;top:11px;font-family:var(--mono);font-size:.72rem;color:var(--peri)}
+.refs em{font-style:italic}
+.refs .free{font-family:var(--mono);font-size:.66rem;color:var(--moss);text-transform:uppercase;letter-spacing:.06em;margin-left:6px}
+
+/* ---------- diversos ---------- */
+.fill{
+  background:#FFF4D6;border-bottom:1px dotted #B8912F;color:#7A5D12;
+  font-family:var(--mono);font-size:.82rem;padding:1px 5px;border-radius:2px;
+}
+footer{border-top:1px solid var(--rule);margin-top:8px;padding-top:20px;font-size:.84rem;color:var(--slate)}
+footer p{max-width:none;margin-bottom:8px}
+
+@media (max-width:860px){
+  .shell{grid-template-columns:1fr;gap:0;padding-bottom:60px}
+  .sidenav{position:static;padding-top:30px}
+  .sidenav ol{columns:2;column-gap:24px}
+  .main{padding-top:34px}
+  .step > a{grid-template-columns:44px 1fr;gap:10px}
+  .trilha::before{left:19px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <p class="eyebrow">Notas · notebooks · referências</p>
+    <p> Fernando Deeke Sasse</p>
+    <h1>Computação Científica</h1>
+    <p class="deck">Métodos computacionais numéricos e algébricos.</p>
+    <p class="sequence">x<sub>0</sub> &rarr; x<sub>1</sub> &rarr; x<sub>2</sub> &rarr; &ctdot; &rarr; <span class="goal">x*</span></p>
+  </div>
+</header>
+
+<div class="shell">
+
+  <nav class="sidenav" aria-label="Tópicos">
+    <h2>Tópicos</h2>
+    <ol>
+      <li><a href="https://sites.google.com/view/can-udesc/python"><span class="k">01</span> Python</a></li>
+      <li><a href="https://sites.google.com/view/can-udesc/maple"><span class="k">02</span> Maple</a></li>
+      <li><a href="https://sites.google.com/view/can-udesc/padr%C3%B5es-de-ponto-flutuante-e-erros"><span class="k">03</span> Ponto flutuante e erros</a></li>
+      <li><a href="https://sites.google.com/view/can-udesc/equa%C3%A7%C3%B5es-alg%C3%A9bricas"><span class="k">04</span> Equações algébricas</a></li>
+      <li><a href="https://sites.google.com/view/can-udesc/sistemas-lineares"><span class="k">05</span> Sistemas lineares</a></li>
+      <li><a href="https://sites.google.com/view/can-udesc/sistemas-n%C3%A3o-lineares"><span class="k">06</span> Sistemas não lineares</a></li>
+      <li><a href="https://sites.google.com/view/can-udesc/interpola%C3%A7%C3%A3o-e-regress%C3%A3o"><span class="k">07</span> Interpolação e regressão</a></li>
+      <li><a href="https://sites.google.com/view/can-udesc/diferencia%C3%A7%C3%A3o-num%C3%A9rica"><span class="k">08</span> Diferenciação numérica</a></li>
+      <li><a href="https://sites.google.com/view/can-udesc/integra%C3%A7%C3%A3o-num%C3%A9rica"><span class="k">09</span> Integração numérica</a></li>
+      <li><a href="https://sites.google.com/view/can-udesc/equa%C3%A7%C3%B5es-diferenciais-ordin%C3%A1rias"><span class="k">10</span> Equações diferenciais</a></li>
+      <li><a href="https://sites.google.com/view/can-udesc/provas"><span class="k">11</span> Exercícios resolvidos</a></li>
+    </ol>
+  </nav>
+
+  <main class="main">
+
+    <section aria-labelledby="sobre">
+      <h2 class="h" id="sobre">Sobre</h2>
+      <p class="lead">Este site reúne notas, notebooks e referências sobre os métodos numéricos que sustentam a computação científica — da representação de números em ponto flutuante à integração de equações diferenciais.</p>
+      <p>Cada tópico traz a formulação do método, uma discussão do erro cometido e implementações em Python e em Maple, prontas para rodar e modificar. O material é aberto e pode ser usado livremente para estudo ou ensino.
+        Os tópicos estão na ordem recomendada de estudo.
+      </p>
+    </section>
+
+    <section aria-labelledby="topicos">
+      <h2 class="h" id="topicos">Tópicos</h2>
+      <ol class="trilha">
+        <li class="step" id="t01"><a href="https://sites.google.com/view/can-udesc/python">
+          <span class="k">01</span>
+          <span><span class="title">Introdução ao Python<span class="tag tag-py">Python</span></span>
+          <span class="gloss">Ambiente, NumPy, SciPy e Matplotlib. Vetorização e boas práticas de código numérico.</span></span></a></li>
+
+        <li class="step" id="t02"><a href="https://sites.google.com/view/can-udesc/maple">
+          <span class="k">02</span>
+          <span><span class="title">Introdução ao Maple<span class="tag tag-mp">Maple</span></span>
+          <span class="gloss">Cálculo simbólico e numérico, aritmética de precisão arbitrária, gráficos.</span></span></a></li>
+
+        <li class="step" id="t03"><a href="https://sites.google.com/view/can-udesc/padr%C3%B5es-de-ponto-flutuante-e-erros">
+          <span class="k">03</span>
+          <span><span class="title">Padrões de ponto flutuante e erros</span>
+          <span class="gloss">IEEE 754, erro absoluto e relativo, cancelamento catastrófico, condicionamento e estabilidade.</span></span></a></li>
+
+        <li class="step" id="t04"><a href="https://sites.google.com/view/can-udesc/equa%C3%A7%C3%B5es-alg%C3%A9bricas">
+          <span class="k">04</span>
+          <span><span class="title">Raízes de equações algébricas</span>
+          <span class="gloss">Bisseção, ponto fixo, Newton–Raphson e secante. Ordem de convergência e critérios de parada.</span></span></a></li>
+
+        <li class="step" id="t05"><a href="https://sites.google.com/view/can-udesc/sistemas-lineares">
+          <span class="k">05</span>
+          <span><span class="title">Sistemas lineares</span>
+          <span class="gloss">Eliminação de Gauss, decomposição LU, pivotamento. Normas, número de condição, Jacobi e Gauss–Seidel.</span></span></a></li>
+
+        <li class="step" id="t06"><a href="https://sites.google.com/view/can-udesc/sistemas-n%C3%A3o-lineares">
+          <span class="k">06</span>
+          <span><span class="title">Sistemas não lineares</span>
+          <span class="gloss">Newton multivariado, matriz jacobiana, métodos quase-Newton e busca em linha.</span></span></a></li>
+
+        <li class="step" id="t07"><a href="https://sites.google.com/view/can-udesc/interpola%C3%A7%C3%A3o-e-regress%C3%A3o">
+          <span class="k">07</span>
+          <span><span class="title">Interpolação e regressão</span>
+          <span class="gloss">Lagrange, Newton - diferenças divididas, fenômeno de Runge, splines cúbicos e mínimos quadrados.</span></span></a></li>
+
+        <li class="step" id="t08"><a href="https://sites.google.com/view/can-udesc/diferencia%C3%A7%C3%A3o-num%C3%A9rica">
+          <span class="k">08</span>
+          <span><span class="title">Diferenciação numérica e extrapolação de Richardson</span>
+          <span class="gloss">Diferenças progressivas, regressivas e centradas. Ordem do erro e ganho de precisão por extrapolação.</span></span></a></li>
+
+        <li class="step" id="t09"><a href="https://sites.google.com/view/can-udesc/integra%C3%A7%C3%A3o-num%C3%A9rica">
+          <span class="k">09</span>
+          <span><span class="title">Integração numérica</span>
+          <span class="gloss">Trapézios, Simpson, Newton–Cotes, quadratura gaussiana e quadratura adaptativa.</span></span></a></li>
+
+        <li class="step" id="t10"><a href="https://sites.google.com/view/can-udesc/equa%C3%A7%C3%B5es-diferenciais-ordin%C3%A1rias">
+          <span class="k">10</span>
+          <span><span class="title">Equações diferenciais ordinárias</span>
+          <span class="gloss">Euler, Heun e Runge–Kutta. Controle de passo, rigidez, problemas de valor inicial e de contorno.</span></span></a></li>
+
+        <li class="step" id="t11"><a href="https://sites.google.com/view/can-udesc/provas">
+          <span class="k">11</span>
+          <span><span class="title">Exercícios resolvidos</span>
+          <span class="gloss">Problemas com solução comentada, cobrindo todos os tópicos anteriores.</span></span></a></li>
+      </ol>
+    </section>
+
+    <section aria-labelledby="ferramentas">
+      <h2 class="h" id="ferramentas">Ferramentas</h2>
+      <p>As notas são escritas em <strong>Maple</strong> e em <strong>notebooks Python</strong>. As worksheets em Maple no formato mw precisam do Maple instalado. A UDESC possui uma licença em rede para Maple. Os notebooks rodam direto no navegador pelo <a href="https://colab.research.google.com/">Google Colab</a> — não é preciso instalar nada para acompanhar o material.</p>
+      <p>Para trabalhar localmente, a distribuição <a href="https://www.anaconda.com/download">Anaconda</a> já traz NumPy, SciPy, Matplotlib e Jupyter. Quem preferir uma instalação enxuta pode usar <code>pip install numpy scipy matplotlib jupyter</code> em um ambiente virtual.</p>
+    </section>
+
+    <section aria-labelledby="material">
+      <h2 class="h" id="material">Bibliografia e links</h2>
+
+      <details open>
+        <summary>Textos recomendados</summary>
+        <div class="details-body">
+          <p style="font-size:.9rem;color:var(--slate)">Boa parte da bibliografia usada para escrever estas notas está listada abaixo.</p>
+          <ol class="refs">
+            <li>Q. Kong, T. Siauw e A. M. Bayen, <em>Python Programming and Numerical Methods: A Guide for Engineers and Scientists</em>, Academic Press, 2020. <a href="https://pythonnumericalmethods.berkeley.edu/notebooks/Index.html">Notebooks</a><span class="free">livre</span></li>
+            <li>C. Cunha, <em>Métodos Numéricos</em>, 2ª ed., Editora da Unicamp, 2000.</li>
+            <li>R. L. Burden e J. D. Faires, <em>Análise Numérica</em>, Cengage Learning, 8ª ed., 2008 (3ª ed. brasileira, 2016).</li>
+            <li>M. A. G. Ruggiero e V. L. R. Lopes, <em>Cálculo Numérico: Aspectos Teóricos e Computacionais</em>, 2ª ed., Makron Books, 1996.</li>
+            <li>S. C. Chapra e R. P. Canale, <em>Métodos Numéricos para Engenharia</em>, 7ª ed., McGraw-Hill/AMGH, 2016.</li>
+            <li>A. Gilat e V. Subramaniam, <em>Métodos Numéricos para Engenheiros e Cientistas</em>, Bookman, 2008.</li>
+            <li>W. Cheney e D. Kincaid, <em>Numerical Mathematics and Computing</em>, 6ª ed., Thomson, 2008.</li>
+            <li>J. Kiusalaas, <em>Numerical Methods in Engineering with Python</em>, 2ª ed., Cambridge University Press, 2010.</li>
+            <li>T. Sauer, <em>Numerical Analysis</em>, 3ª ed., Pearson, 2018.</li>
+            <li>L. N. Trefethen e D. Bau III, <em>Numerical Linear Algebra</em>, SIAM, 1997.</li>
+            <li>M. Cabral e P. Goldfeld, <em>Curso de Álgebra Linear: Fundamentos e Aplicações</em>, 3ª ed., 2012. <a href="https://www.labma.ufrj.br/~mcabral/livros/livro-alglin/alglin-material/CursoAlgLin-livro.pdf">PDF</a><span class="free">livre</span></li>
+            <li><a href="https://www.ufrgs.br/reamat/CalculoNumerico/index.html">REAMAT</a> — recursos educacionais abertos em matemática aplicada, UFRGS.<span class="free">livre</span></li>
+          </ol>
+        </div>
+      </details>
+
+      <details>
+        <summary>Cursos e notas de aula na web</summary>
+        <div class="details-body">
+          <ol class="refs">
+            <li>L. Demanet, <a href="https://ocw.mit.edu/courses/18-330-introduction-to-numerical-analysis-spring-2012/">18.330 Introduction to Numerical Analysis</a>, MIT OpenCourseWare.</li>
+            <li>G. Strang, <a href="https://ocw.mit.edu/courses/18-065-matrix-methods-in-data-analysis-signal-processing-and-machine-learning-spring-2018/">18.065 Matrix Methods in Data Analysis, Signal Processing and Machine Learning</a>, MIT OpenCourseWare.</li>
+            <li>A. Kartha, <a href="http://www.iitg.ac.in/kartha/CE601/LectureSlides.htm">CE 601 Numerical Methods</a>, IIT Guwahati.</li>
+            <li>J. D. Fenton, <a href="http://johndfenton.com/Lectures/Numerical-Methods/Numerical-Methods.pdf">Numerical Methods</a>, TU Wien. <span class="free">PDF</span></li>
+            <li>D. V. Fedorov, <a href="https://phys.au.dk/~fedorov/Numeric/11/book.pdf">Introduction to Numerical Methods with examples in Javascript</a>, Aarhus, 2010. <span class="free">PDF</span></li>
+            <li>J. R. Chasnov, <a href="http://www.math.ust.hk/~machas/numerical-methods.pdf">Introduction to Numerical Methods</a>, HKUST. <span class="free">PDF</span></li>
+            <li>D. W. Harder e R. Khoury, <a href="https://ece.uwaterloo.ca/~dwharder/nm/">Numerical Analysis for Engineering</a>, U. Waterloo.</li>
+            <li>A. P. Young, <a href="https://peteryoung.sites.ucsc.edu/teaching/">Computational Physics</a>, UC Santa Cruz.</li>
+            <li>C. Moler, <a href="https://www.mathworks.com/moler/chapters.html">Numerical Computing with MATLAB</a>, SIAM. <span class="free">livre</span></li>
+          </ol>
+        </div>
+      </details>
+    </section>
+
+    <footer>
+      <p>Mantido por Fernando Deeke Sasse · <span class="fill">e-mail</span></p>
+      <p>Texto e código disponíveis sob a licença <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.pt-br">CC BY-SA 4.0</a>. Última atualização: <span class="fill">data</span>.</p>
+    </footer>
+
+  </main>
+</div>
+
+</body>
+</html>
