@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LMN0001 — Laboratório de Métodos Numéricos · Plano de Ensino</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14171f;
+    --ink-soft:#2a2f3d;
+    --paper:#f5f2ea;
+    --paper-2:#ebe6d8;
+    --paper-3:#e1dbc9;
+    --line:#d3ccb8;
+    --blue:#2c3a5e;
+    --blue-soft:#47597f;
+    --amber:#b1791a;
+    --amber-soft:#e3a94a;
+    --teal:#3f6e6a;
+    --ink-70:rgba(20,23,31,.72);
+    --ink-50:rgba(20,23,31,.52);
+    --serif:'Newsreader', Georgia, 'Times New Roman', serif;
+    --sans:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --radius: 10px;
+    --maxw: 1040px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:var(--blue);}
+  a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible{
+    outline:2px solid var(--teal);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:
+      radial-gradient(ellipse 900px 500px at 85% -10%, rgba(177,121,26,.18), transparent 60%),
+      linear-gradient(180deg, var(--ink), var(--ink-soft));
+    color:var(--paper);
+    position:relative;
+    overflow:hidden;
+    padding:64px 0 46px;
+  }
+  .hero .wrap{position:relative; z-index:2;}
+  .hero-eyebrow{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--amber-soft);
+    display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+    margin-bottom:22px;
+  }
+  .hero-eyebrow .dot{opacity:.5;}
+  .hero h1{
+    font-family:var(--serif);
+    font-weight:500;
+    font-style:italic;
+    font-size:clamp(32px, 5vw, 52px);
+    line-height:1.08;
+    margin:0 0 14px;
+    max-width:16ch;
+  }
+  .hero p.lede{
+    font-size:17px;
+    max-width:52ch;
+    color:rgba(245,242,234,.82);
+    margin:0 0 30px;
+  }
+  .badges{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:44px;}
+  .badge{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:.03em;
+    padding:7px 13px;
+    border:1px solid rgba(245,242,234,.28);
+    border-radius:999px;
+    color:rgba(245,242,234,.92);
+    white-space:nowrap;
+  }
+  .badge b{color:var(--amber-soft); font-weight:600;}
+
+  .converge-wrap{
+    width:100%;
+    max-width:640px;
+  }
+  .converge-wrap svg{width:100%; height:auto; display:block;}
+  .converge-path{
+    fill:none;
+    stroke:var(--amber-soft);
+    stroke-width:2;
+    stroke-linecap:round;
+    stroke-dasharray:900;
+    stroke-dashoffset:900;
+    animation:draw 2.6s ease-out .2s forwards;
+  }
+  .converge-axis{stroke:rgba(245,242,234,.22); stroke-width:1;}
+  .converge-caption{
+    font-family:var(--mono);
+    font-size:11.5px;
+    fill:rgba(245,242,234,.45);
+    letter-spacing:.04em;
+  }
+  @keyframes draw{ to { stroke-dashoffset:0; } }
+
+  /* ---------- STICKY NAV ---------- */
+  nav.subnav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(245,242,234,.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.subnav .wrap{
+    display:flex; align-items:center; gap:4px;
+    overflow-x:auto;
+    padding:0 28px;
+    scrollbar-width:thin;
+  }
+  nav.subnav a{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:var(--ink-70);
+    white-space:nowrap;
+    padding:14px 12px;
+    border-bottom:2px solid transparent;
+    transition:color .15s, border-color .15s;
+  }
+  nav.subnav a:hover{color:var(--blue);}
+  nav.subnav a.active{color:var(--blue); border-color:var(--amber);}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:56px 0;}
+  section + section{border-top:1px solid var(--line);}
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin:0 0 10px;
+  }
+  h2.section-title{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(24px,3.4vw,32px);
+    margin:0 0 26px;
+    color:var(--ink);
+  }
+  .lead-text{max-width:70ch; color:var(--ink-70); font-size:15.5px;}
+
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:28px;}
+  @media (max-width:760px){ .grid-2{grid-template-columns:1fr;} }
+
+  .card{
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:24px 26px;
+  }
+  .card h3{
+    font-family:var(--sans); font-weight:600; font-size:14.5px;
+    margin:0 0 10px; color:var(--blue);
+  }
+  .card p{margin:0; color:var(--ink-70); font-size:15px;}
+
+  dl.objectives{margin:0; display:flex; flex-direction:column; gap:16px;}
+  dl.objectives dt{
+    font-family:var(--mono); font-weight:600; font-size:13.5px;
+    color:var(--blue); text-transform:uppercase; letter-spacing:.03em;
+  }
+  dl.objectives dd{margin:4px 0 0; color:var(--ink-70); font-size:14.5px;}
+
+  /* ---------- ROADMAP ---------- */
+  .roadmap-scroll{overflow-x:auto; padding-bottom:14px; margin:0 -4px 30px;}
+  .roadmap{
+    display:flex; align-items:flex-start; gap:0; min-width:max-content; padding:20px 4px 6px;
+  }
+  .rm-node{
+    display:flex; flex-direction:column; align-items:center;
+    width:104px; flex:0 0 auto; text-align:center; position:relative;
+  }
+  .rm-node .connector{
+    position:absolute; top:19px; left:-52px; width:104px; height:1px;
+    background:var(--line);
+  }
+  .rm-node:first-child .connector{display:none;}
+  .rm-dot{
+    width:38px; height:38px; border-radius:50%;
+    background:var(--blue); color:var(--paper);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:13px; font-weight:600;
+    position:relative; z-index:2; flex:none;
+    border:3px solid var(--paper);
+    box-shadow:0 0 0 1px var(--line);
+  }
+  .rm-node.exam .rm-dot{
+    background:var(--amber); border-radius:8px; transform:rotate(45deg);
+  }
+  .rm-node.exam .rm-dot span{transform:rotate(-45deg); display:block;}
+  .rm-label{
+    font-size:11.5px; margin-top:10px; color:var(--ink-70);
+    line-height:1.25; max-width:100px;
+  }
+  .rm-hours{
+    font-family:var(--mono); font-size:11px; color:var(--teal); margin-top:4px; font-weight:600;
+  }
+  .rm-node.exam .rm-label, .rm-node.exam .rm-hours{color:var(--amber);}
+
+  .hourbar-wrap{position:relative; padding-top:6px;}
+  .hourbar{
+    display:flex; width:100%; height:34px; border-radius:8px; overflow:hidden;
+    border:1px solid var(--line);
+  }
+  .hourbar .seg{
+    height:100%; position:relative; cursor:pointer;
+    border-right:1px solid rgba(245,242,234,.5);
+    background:none; padding:0; margin:0; font:inherit;
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+  }
+  .hourbar .seg .seg-label{
+    font-family:var(--mono); font-size:11.5px; font-weight:600;
+    color:rgba(255,255,255,.95); pointer-events:none;
+    text-shadow:0 1px 1px rgba(0,0,0,.25);
+    white-space:nowrap;
+  }
+  .hourbar .seg:last-child{border-right:none;}
+  .hourbar .seg.unit{background:var(--blue-soft);}
+  .hourbar .seg.exam{background:var(--amber);}
+  .hourbar .seg:hover, .hourbar .seg:focus-visible{filter:brightness(1.15);}
+  .hourbar .seg:focus-visible{outline:2px solid var(--ink); outline-offset:-2px;}
+  .hourbar .seg[data-tip]:hover::after, .hourbar .seg[data-tip]:focus-visible::after{
+    content:attr(data-tip);
+    position:absolute; bottom:120%; left:50%; transform:translateX(-50%);
+    background:var(--ink); color:var(--paper); font-family:var(--mono);
+    font-size:11.5px; padding:7px 10px; border-radius:6px; white-space:pre-line;
+    text-align:center; z-index:20; line-height:1.5; box-shadow:0 4px 14px rgba(0,0,0,.25);
+  }
+  /* keep first/last tooltips from clipping off the edge of the viewport */
+  .hourbar .seg:first-child[data-tip]:hover::after{left:0; transform:translateX(0);}
+  .hourbar .seg:last-child[data-tip]:hover::after{left:auto; right:0; transform:translateX(0);}
+
+  .checkpoints{position:relative; height:34px; margin-top:2px;}
+  .checkpoint{
+    position:absolute; top:0; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; cursor:pointer;
+    background:none; border:none; padding:0; font:inherit;
+  }
+  .checkpoint .tick{width:1px; height:9px; background:var(--amber);}
+  .checkpoint .cp-label{
+    font-family:var(--mono); font-size:10.5px; color:var(--amber); font-weight:600;
+    white-space:nowrap; margin-top:2px;
+  }
+  .checkpoint:hover .cp-label, .checkpoint:focus-visible .cp-label{text-decoration:underline;}
+
+  .hourbar-caption{
+    display:flex; justify-content:space-between; align-items:baseline; margin-top:22px;
+    font-family:var(--mono); font-size:12px; color:var(--ink-50); flex-wrap:wrap; gap:8px;
+  }
+  .legend{display:flex; gap:18px; align-items:center; flex-wrap:wrap;}
+  .legend span{display:inline-flex; align-items:center; gap:6px;}
+  .legend i{width:10px; height:10px; border-radius:3px; display:inline-block;}
+  .legend i.unit{background:var(--blue-soft);}
+  .legend i.exam{background:var(--amber);}
+  .hint{font-style:italic; color:var(--ink-50);}
+
+  /* ---------- UNITS ACCORDION ---------- */
+  .units-toolbar{
+    display:flex; gap:12px; flex-wrap:wrap; align-items:center;
+    margin-bottom:22px;
+  }
+  .search-box{
+    flex:1 1 240px; position:relative;
+  }
+  .search-box input{
+    width:100%; font-family:var(--sans); font-size:14.5px;
+    padding:10px 14px 10px 34px;
+    border:1px solid var(--line); border-radius:8px;
+    background:var(--paper-2); color:var(--ink);
+  }
+  .search-box::before{
+    content:"⌕"; position:absolute; left:12px; top:50%; transform:translateY(-50%);
+    color:var(--ink-50); font-size:16px;
+  }
+  .btn{
+    font-family:var(--mono); font-size:12px; letter-spacing:.03em;
+    text-transform:uppercase; border:1px solid var(--line); background:var(--paper);
+    color:var(--blue); padding:9px 14px; border-radius:8px; cursor:pointer;
+  }
+  .btn:hover{background:var(--paper-2);}
+
+  .unit-card{
+    border:1px solid var(--line); border-radius:var(--radius);
+    margin-bottom:12px; background:var(--paper);
+    overflow:hidden;
+  }
+  .unit-card.exam-card{border-left:4px solid var(--amber);}
+  .unit-card:not(.exam-card){border-left:4px solid var(--blue);}
+  .unit-card.flash{animation:flash-bg 1.2s ease;}
+  @keyframes flash-bg{
+    0%{background:var(--paper-3);}
+    100%{background:var(--paper);}
+  }
+  .unit-head{
+    width:100%; display:flex; align-items:center; gap:16px;
+    padding:16px 18px; background:none; border:none; cursor:pointer;
+    text-align:left; font-family:var(--sans);
+  }
+  .unit-num{
+    font-family:var(--mono); font-weight:600; font-size:15px;
+    color:var(--paper); background:var(--blue);
+    width:40px; height:40px; border-radius:50%; flex:none;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .exam-card .unit-num{background:var(--amber); border-radius:8px;}
+  .unit-title{flex:1; font-weight:600; font-size:15.5px; color:var(--ink);}
+  .unit-hours{
+    font-family:var(--mono); font-size:12.5px; color:var(--teal);
+    border:1px solid var(--line); padding:4px 10px; border-radius:999px; flex:none;
+  }
+  .exam-card .unit-hours{color:var(--amber); }
+  .chevron{
+    width:18px; height:18px; flex:none; color:var(--ink-50);
+    transition:transform .2s;
+  }
+  .unit-card.open .chevron{transform:rotate(180deg);}
+
+  .unit-body{
+    max-height:0; overflow:hidden; transition:max-height .28s ease;
+  }
+  .unit-body-inner{padding:0 18px 18px 74px;}
+  .item-row{
+    display:flex; gap:12px; align-items:baseline;
+    padding:9px 0; border-top:1px dashed var(--line);
+  }
+  .item-row:first-child{border-top:none;}
+  .item-tag{
+    font-family:var(--mono); font-size:12.5px; color:var(--blue-soft);
+    flex:none; width:44px;
+  }
+  .exam-card .item-tag{color:var(--amber);}
+  .item-text{flex:1; font-size:14.5px; color:var(--ink-70);}
+  .item-hours{
+    font-family:var(--mono); font-size:12px; color:var(--ink-50); flex:none;
+  }
+
+  .no-results{
+    display:none; text-align:center; padding:30px; color:var(--ink-50);
+    font-family:var(--mono); font-size:13px;
+  }
+
+  /* ---------- METHODOLOGY / EVAL ---------- */
+  .info-strip{display:grid; grid-template-columns:1fr 1fr; gap:28px;}
+  @media (max-width:760px){.info-strip{grid-template-columns:1fr;}}
+
+  details.fineprint{
+    border:1px solid var(--line); border-radius:var(--radius);
+    padding:0; background:var(--paper-2);
+  }
+  details.fineprint summary{
+    cursor:pointer; padding:16px 20px; font-weight:600; font-size:14.5px;
+    color:var(--blue); list-style:none; display:flex; align-items:center; gap:10px;
+  }
+  details.fineprint summary::before{
+    content:"+"; font-family:var(--mono); font-size:16px; color:var(--amber);
+  }
+  details.fineprint[open] summary::before{content:"–";}
+  details.fineprint .fp-body{padding:0 20px 20px; color:var(--ink-70); font-size:14.5px;}
+  details.fineprint .fp-body ul{margin:10px 0 0; padding-left:20px;}
+  details.fineprint .fp-body li{margin-bottom:6px;}
+
+  /* ---------- BIBLIOGRAPHY ---------- */
+  .biblio-col h3{
+    font-family:var(--mono); text-transform:uppercase; letter-spacing:.06em;
+    font-size:13px; color:var(--teal); margin:0 0 16px;
+  }
+  .biblio-col ol{margin:0; padding:0; list-style:none; counter-reset:bib;}
+  .biblio-col li{
+    counter-increment:bib;
+    font-size:14px; color:var(--ink-70); margin-bottom:14px; padding-left:26px;
+    position:relative; line-height:1.5;
+  }
+  .biblio-col li::before{
+    content:counter(bib, decimal-leading-zero);
+    position:absolute; left:0; top:0;
+    font-family:var(--mono); font-size:12px; color:var(--amber); font-weight:600;
+  }
+  .biblio-col li a{color:var(--teal); text-decoration-color:rgba(63,110,106,.4);}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--ink); color:rgba(245,242,234,.6);
+    padding:30px 0; font-size:13px;
+  }
+  footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+  footer strong{color:rgba(245,242,234,.9);}
+
+  /* ---------- PRINT ---------- */
+  @media print{
+    nav.subnav, .units-toolbar, .search-box, .btn, .chevron{display:none !important;}
+    .hero{background:none !important; color:var(--ink) !important; padding:20px 0;}
+    .hero .converge-wrap, .badges{display:none;}
+    .hero p.lede{color:var(--ink-70);}
+    .unit-body{max-height:none !important;}
+    section{padding:22px 0; break-inside:avoid;}
+    .unit-card{break-inside:avoid;}
+    body{background:#fff;}
+  }
+
+  @media (max-width:600px){
+    .wrap{padding:0 18px;}
+    .unit-body-inner{padding-left:18px;}
+    .unit-title{font-size:14.5px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="hero-eyebrow">
+      UDESC · CCT-DMAT <span class="dot">·</span> LMN0001 <span class="dot">·</span> 2026/2
+    </p>
+    <h1>Laboratório de Métodos Numéricos</h1>
+    <p class="lede">Métodos numéricos essenciais para o engenheiro</p>
+    <div class="badges">
+      <span class="badge">Carga horária <b>72h</b></span>
+      <span class="badge">Período <b>2026/2</b></span>
+      <span class="badge">Curso <b>Eng. Elétrica</b></span>
+      <span class="badge">Prof. <b>Fernando Deeke Sasse</b></span>
+    </div>
+    <div class="converge-wrap" aria-hidden="true">
+      <svg viewBox="0 0 640 170">
+        <line class="converge-axis" x1="0" y1="118" x2="640" y2="118"/>
+        <path class="converge-path" d="M0,20 C 40,140 70,10 100,110 C 120,150 140,80 160,118 C 175,140 190,100 205,118 C 218,130 230,108 245,118 C 258,124 270,112 285,118 L 640,118"/>
+        <text class="converge-caption" x="0" y="150">x&#8320; &#8594; x&#8321; &#8594; x&#8322; &#8594; &#8943; &#8594; x*</text>
+        <text class="converge-caption" x="560" y="112" text-anchor="end">|e&#8344;| &lt; &#949;</text>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<nav class="subnav" id="subnav">
+  <div class="wrap">
+    <a href="#ementa">Ementa</a>
+    <a href="#objetivos">Objetivos</a>
+    <a href="#cronograma">Cronograma</a>
+    <a href="#unidades">Conteúdo</a>
+    <a href="#avaliacao">Avaliação</a>
+    <a href="#bibliografia">Bibliografia</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- EMENTA + OBJETIVOS -->
+  <section id="ementa">
+    <div class="wrap">
+      <!--<p class="eyebrow">01 · Escopo da disciplina</p>-->
+      <h2 class="section-title">Ementa</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>O que o curso cobre</h3>
+          <p>Erros. Zeros de funções. Sistemas lineares e não lineares. Interpolação. Métodos numéricos para solução de equações diferenciais. Teoria de aproximação e integração numérica.</p>
+        </div>
+        <div class="card">
+          <h3>Disciplina</h3>
+          <p><strong>Laboratório de Métodos Numéricos</strong> (LMN0001)  Departamento de Matemática, CCT/UDESC <br>Contato: <a href="mailto:fernando.sasse@udesc.br">fernando.sasse@udesc.br</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="objetivos">
+    <div class="wrap">
+      <!--<p class="eyebrow">02 · A meta</p>-->
+      <h2 class="section-title">Objetivos</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Objetivo geral</h3>
+          <p>Introduzir os conhecimentos de métodos numéricos de álgebra linear e cálculo, envolvendo teoria e implementações computacionais.</p>
+        </div>
+        <div class="card">
+          <h3>Objetivo específico: ao concluir os estudos, o estudante deverá dominar</h3>
+          <dl class="objectives">
+            <div><dt>Programação estruturada</dt><dd>Tomadas de decisão, loops, funções e parâmetros em uma linguagem de programação numérica.</dd></div>
+            <div><dt>Métodos numéricos</dt><dd>Quando usar cada método e como implementá-lo de forma estruturada: sistemas lineares e não lineares, interpolação, ajustes, diferenciação, integração e EDOs.</dd></div>
+            <div><dt>Acurácia numérica</dt><dd>Estimar o erro inerente aos diversos métodos.</dd></div>
+            <div><dt>Eficiência numérica</dt><dd>Comparar métodos quando mais de uma opção resolve a mesma classe de problema.</dd></div>
+            <div><dt>Estabilidade numérica</dt><dd>Propriedades de convergência e limitações de cada método.</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CRONOGRAMA -->
+  <section id="cronograma">
+    <div class="wrap">
+      <!--<p class="eyebrow">03 · Rota do semestre</p>-->
+      <h2 class="section-title">Cronograma e carga horária</h2>
+      <p class="lead-text" style="margin-bottom:28px;">14 unidades de conteúdo e 4 marcos de avaliação, perfazendo 72 horas.</p>
+
+      <div class="roadmap-scroll">
+        <div class="roadmap" id="roadmap"><!-- populated by JS --></div>
+      </div>
+
+      <div class="hourbar-wrap">
+        <div class="hourbar" id="hourbar"><!-- populated by JS --></div>
+        <div class="checkpoints" id="checkpoints"><!-- populated by JS: cumulative hours at each prova --></div>
+      </div>
+      <div class="hourbar-caption">
+        <span class="legend"><span><i class="unit"></i> unidade de conteúdo</span><span><i class="exam"></i> avaliação</span></span>
+        <span class="hint">clique num trecho para abrir a unidade · marcas ⊥ mostram o total de horas dado até cada prova</span>
+        <span>total: 72&nbsp;h</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- UNIDADES -->
+  <section id="unidades">
+    <div class="wrap">
+     <!--<p class="eyebrow">04 · Tópicos</p>-->
+      <h2 class="section-title">Conteúdo</h2>
+
+      <div class="units-toolbar">
+        <div class="search-box">
+          <input type="text" id="unitSearch" placeholder="Buscar por tópico — ex.: Newton, splines, Jacobi…">
+        </div>
+        <button class="btn" id="expandAll">Expandir todas</button>
+        <button class="btn" id="collapseAll">Recolher todas</button>
+      </div>
+
+      <div id="unitsList"><!-- populated by JS --></div>
+      <p class="no-results" id="noResults">Nenhum tópico encontrado.</p>
+    </div>
+  </section>
+
+  <!-- METODOLOGIA + AVALIAÇÃO -->
+  <section id="avaliacao">
+    <div class="wrap">
+      <!--<p class="eyebrow">05 · Como o curso funciona</p>-->
+      <h2 class="section-title">Metodologia e avaliação</h2>
+      <div class="info-strip">
+        <div class="card">
+          <h3>Metodologia</h3>
+          <p>Aulas presenciais. Em cada aula, as exposições teóricas serão complementadas com implementações computacionais em Maple e Python e aplicações.</p>
+        </div>
+        <div class="card">
+          <h3>Sistema de avaliação</h3>
+          <p>Três provas presenciais, de igual peso, e uma prova recuperativa ao final do semestre, cuja nota substitui a menor das três notas obtidas ao longo do período.</p>
+        </div>
+      </div>
+
+      <div style="height:20px;"></div>
+
+      <details class="fineprint">
+        <summary>Realização de prova de 2ª chamada</summary>
+        <div class="fp-body">
+          <p>A Resolução nº 018/2004-CONSEPE regulamenta o processo de realização de provas de segunda chamada.</p>
+          <p>Segundo esta resolução, o aluno que deixar de comparecer a qualquer das avaliações nas datas fixadas pelos professores poderá solicitar segunda chamada de provas na Secretaria Acadêmica, mediante requerimento assinado e comprovante de pagamento da taxa, no prazo de 5 (cinco) dias úteis contados a partir da data de realização de cada prova. São aceitos pedidos devidamente comprovados, motivados por:</p>
+          <ul>
+            <li>I — problema de saúde, devidamente comprovado, que justifique a ausência;</li>
+            <li>II — doença de caráter infectocontagioso, impeditiva do comparecimento, comprovada por atestado médico reconhecido na forma da lei, constando o Código Internacional de Doenças (CID);</li>
+            <li>III — ter sido vítima de ação involuntária provocada por terceiros.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- BIBLIOGRAFIA -->
+  <section id="bibliografia">
+    <div class="wrap">
+      <!--<p class="eyebrow">06 · Referências</p>-->
+      <h2 class="section-title">Bibliografia</h2>
+      <div class="grid-2">
+        <div class="biblio-col">
+          <h3>Básica</h3>
+          <ol>
+            <li>CHENEY, E. W.; KINCAID, David. <em>Numerical mathematics and computing</em>. 7th ed. Boston, MA: Brooks/Cole, 2013. </li>
+            <li>BURDEN, Richard L. <em>Análise numérica</em>. 3. ed. São Paulo: Cengage Learning, 2016. </li>
+            <li>FRANCO, Neide Bertoldi. <em>Cálculo numérico</em>. São Paulo: Prentice-Hall, 2007. </li>
+          </ol>
+        </div>
+        <div class="biblio-col">
+          <h3>Complementar</h3>
+          <ol>
+            <li>SASSE, Fernando Deeke. <em><a href="https://fernandodeeke.github.io/can2025/computacao-cientifica.html" target="_blank" rel="noopener">Computação Científica com Maple e Python</a>, 2026.</li>
+            <li>CHAPRA, Steven C.; CANALE, Raymond P. <em>Métodos numéricos para engenharia</em>. 7. ed. Porto Alegre: AMGH, 2016.</li>
+            <li>ALBRECHT, P. <em>Análise numérica: um curso moderno</em>. Rio de Janeiro: LTC, 1973. (Ciência da Computação).</li>
+            <li>GILAT, Amos; SUBRAMANIAM, Vish. <em>Numerical methods for engineers and scientists</em>. Wiley, 2008. </li>
+            <li>LAY, David C.; LAY, Steven R.; MCDONALD, Judi J. <em>Álgebra linear e suas aplicações</em>. Rio de Janeiro: LTC, 2024. </li>
+            <li>LANGTANGEN, Hans Petter. <em>Python scripting for computational science</em>. Berlin: Springer, 2008. </li>
+            <li>RALSTON, Anthony; RABINOWITZ, Philip. <em>A first course in numerical analysis</em>. 2. ed. New York: Dover, 2001. </li>
+            <li>LANDAU, Rubin H.; PÁEZ MEJÍA, Manuel José; BORDEIANU, Cristian C. <em>Computational physics: problem solving with computers</em>. 2nd ed. Wiley-VCH, 2007.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><strong>UDESC</strong> — Centro de Ciências Tecnológicas (CCT) · Departamento de Matemática</div>
+    <div>Plano de Ensino · LMN0001 · 2026/2</div>
+  </div>
+</footer>
+
+<script>
+// ---------- data ----------
+// Order mirrors "Conteúdo Programático e Carga Horária" exactly.
+const DATA = [
+  {kind:'unit', num:'1', title:'Erros na Computação Numérica e Aritmética Computacional', hours:4, items:[
+    ['1.1','Erros computacionais: erros de arredondamento e de truncamento; análise de erro em operações aritméticas.',2],
+    ['1.2','Aritmética de ponto flutuante: sistema de ponto flutuante, padrão IEEE 754 e fórmula de Taylor com resto de Lagrange.',2],
+  ]},
+  {kind:'unit', num:'2', title:'Zeros de Equações Algébricas', hours:4, items:[
+    ['2.1','Método da bissecção e métodos de ponto fixo: heurística, algoritmo e análise de convergência.',2],
+    ['2.2','Método de Newton-Raphson e método da secante: dedução geométrica, exemplos e análise de convergência.',2],
+  ]},
+  {kind:'unit', num:'3', title:'Sistemas de Equações Lineares — Métodos Diretos', hours:4, items:[
+    ['3.1','Eliminação de Gauss simples e com pivotação parcial de linhas e com escalas.',2],
+    ['3.2','Fatoração LU (métodos de Doolittle e de Crout), inversão de matrizes, normas matriciais e número de condição.',2],
+  ]},
+  {kind:'unit', num:'4', title:'Sistemas de Equações Lineares — Métodos Iterativos', hours:4, items:[
+    ['4.1','Método iterativo de Jacobi: descrição, convergência e implementação computacional.',2],
+    ['4.2','Método iterativo de Gauss-Seidel: introdução, exemplos e análise de convergência.',2],
+  ]},
+  {kind:'unit', num:'5', title:'Sistemas de Equações Não Lineares', hours:2, items:[
+    ['5.1','Método de Newton para sistemas não lineares.',2],
+  ]},
+  {kind:'unit', num:'6', title:'Aplicações em Engenharia I', hours:2, items:[
+    ['6.1','Aplicações de zeros de funções e sistemas de equações lineares e não lineares a problemas de engenharia.',2],
+  ]},
+  {kind:'exam', num:'P1', title:'Prova 1', hours:2, items:[
+    ['','Avaliação escrita presencial sobre erros, zeros de funções e sistemas de equações lineares e não lineares.',2],
+  ]},
+  {kind:'unit', num:'7', title:'Interpolação', hours:6, items:[
+    ['7.1','Interpolação linear, funções de base e interpolação de Lagrange.',2],
+    ['7.2','Interpolação de Newton e diferenças divididas: definição, tabela, grau do polinômio e erro.',2],
+    ['7.3','Pontos de Chebyshev, fenômeno de Runge e splines quadráticos e cúbicos.',2],
+  ]},
+  {kind:'unit', num:'8', title:'Diferenciação Numérica', hours:4, items:[
+    ['8.1','Aproximação por diferenças finitas para primeira e segunda derivada.',2],
+    ['8.2','Extrapolação de Richardson.',2],
+  ]},
+  {kind:'unit', num:'9', title:'Ajuste de Curvas', hours:4, items:[
+    ['9.1','Método dos mínimos quadrados: ajuste de reta, regressão linear e ajuste de função.',2],
+    ['9.2','Regressão linear com gradientes descendentes.',2],
+  ]},
+  {kind:'unit', num:'10', title:'Integração Numérica', hours:6, items:[
+    ['10.1','Método trapezoidal para integração numérica.',2],
+    ['10.2','Métodos de Simpson-Kepler 1/3 e 3/8: dedução e fórmula de erro.',2],
+    ['10.3','Método trapezoidal recursivo, método de Romberg e quadratura gaussiana.',2],
+  ]},
+  {kind:'unit', num:'11', title:'Aplicações em Engenharia II', hours:2, items:[
+    ['11.1','Aplicações de interpolação, diferenciação numérica, ajuste de curvas e integração numérica a problemas de engenharia.',2],
+  ]},
+  {kind:'exam', num:'P2', title:'Prova 2', hours:2, items:[
+    ['','Avaliação escrita presencial sobre interpolação, diferenciação numérica, ajuste de curvas e integração numérica.',2],
+  ]},
+  {kind:'unit', num:'12', title:'Problemas de Valor Inicial (EDOs)', hours:10, items:[
+    ['12.1','Métodos de Euler explícito e implícito: erros e estabilidade.',2],
+    ['12.2','Método do ponto central; métodos de Runge-Kutta de 2ª e 4ª ordem.',2],
+    ['12.3','Métodos de passo múltiplo: Adams-Bashforth, Adams-Moulton e método preditor-corretor.',2],
+    ['12.4','Método da série de Taylor; implementações computacionais e comandos dos sistemas.',2],
+    ['12.5','Análise geral de erros e estabilidade; sistemas de equações diferenciais ordinárias e equações rígidas.',2],
+  ]},
+  {kind:'unit', num:'13', title:'Problemas de Valor de Contorno (EDOs)', hours:10, items:[
+    ['13.1','Problema de Sturm-Liouville e método do tiro.',2],
+    ['13.2','Método de diferenças finitas.',2],
+    ['13.3','Método de Rayleigh-Ritz.',2],
+    ['13.4','Método da colocação.',2],
+    ['13.5','Método de Galerkin e método dos elementos finitos.',2],
+  ]},
+  {kind:'unit', num:'14', title:'Aplicações em Engenharia III', hours:2, items:[
+    ['14.1','Aplicações de métodos numéricos para equações diferenciais ordinárias a problemas de engenharia.',2],
+  ]},
+  {kind:'exam', num:'P3', title:'Prova 3', hours:2, items:[
+    ['','Avaliação escrita presencial sobre métodos numéricos para equações diferenciais ordinárias.',2],
+  ]},
+  {kind:'exam', num:'PR', title:'Prova Recuperativa', hours:2, items:[
+    ['','Três provas presenciais, de igual peso, e uma prova recuperativa ao final do semestre, cuja nota substitui a menor das três notas obtidas ao longo do período.',2],
+  ]},
+];
+
+const TOTAL = DATA.reduce((s,d)=>s+d.hours,0);
+
+// ---------- render roadmap ----------
+const roadmapEl = document.getElementById('roadmap');
+DATA.forEach(d=>{
+  const node = document.createElement('div');
+  node.className = 'rm-node' + (d.kind==='exam' ? ' exam' : '');
+  node.innerHTML = `
+    <div class="connector"></div>
+    <div class="rm-dot"><span>${d.kind==='exam' ? d.num : d.num}</span></div>
+    <div class="rm-label">${d.title}</div>
+    <div class="rm-hours">${d.hours}h</div>`;
+  roadmapEl.appendChild(node);
+});
+
+// ---------- render hour bar (clickable, cumulative-aware) ----------
+const hourbarEl = document.getElementById('hourbar');
+const checkpointsEl = document.getElementById('checkpoints');
+let cumulative = 0;
+DATA.forEach((d, idx)=>{
+  const before = cumulative;
+  cumulative += d.hours;
+  const pct = Math.round(cumulative / TOTAL * 100);
+
+  const seg = document.createElement('button');
+  seg.type = 'button';
+  seg.className = 'seg ' + (d.kind==='exam' ? 'exam' : 'unit');
+  seg.style.width = (d.hours/TOTAL*100) + '%';
+  seg.setAttribute('data-tip', `${d.title}\n${d.hours}h neste bloco · ${cumulative}h acumuladas (${pct}%)`);
+  seg.setAttribute('aria-label', `${d.title}, ${d.hours} horas. Acumulado até aqui: ${cumulative} de ${TOTAL} horas. Clique para abrir esta unidade.`);
+  seg.innerHTML = `<span class="seg-label">${d.num}</span>`;
+  seg.addEventListener('click', ()=> jumpToCard(idx));
+  hourbarEl.appendChild(seg);
+
+  // checkpoint markers only for the three content-gating exams (not the makeup exam)
+  if(d.kind === 'exam' && d.title !== 'Prova Recuperativa'){
+    const cp = document.createElement('button');
+    cp.type = 'button';
+    cp.className = 'checkpoint';
+    cp.style.left = (cumulative / TOTAL * 100) + '%';
+    cp.innerHTML = `<span class="tick"></span><span class="cp-label">${d.title.replace('Prova ','P')} · ${cumulative}h</span>`;
+    cp.setAttribute('aria-label', `${d.title}: ${cumulative} horas de conteúdo dadas até este ponto do semestre.`);
+    cp.addEventListener('click', ()=> jumpToCard(idx));
+    checkpointsEl.appendChild(cp);
+  }
+});
+
+// hide a segment's number label if the segment renders too narrow to hold it legibly
+// (re-checked on load and on resize, since widths are percentage-based)
+function fitSegLabels(){
+  hourbarEl.querySelectorAll('.seg').forEach(seg=>{
+    const label = seg.querySelector('.seg-label');
+    if(!label) return;
+    label.style.display = '';
+    const fits = seg.getBoundingClientRect().width >= (label.scrollWidth + 8);
+    label.style.display = fits ? '' : 'none';
+  });
+}
+window.addEventListener('resize', fitSegLabels);
+window.addEventListener('load', fitSegLabels);
+fitSegLabels();
+
+// ---------- render unit accordion ----------
+const listEl = document.getElementById('unitsList');
+const cardEls = [];
+
+function setOpen(card, open){
+  const head = card.querySelector('.unit-head');
+  const body = card.querySelector('.unit-body');
+  if(open){
+    card.classList.add('open');
+    head.setAttribute('aria-expanded','true');
+    body.style.maxHeight = body.scrollHeight + 'px';
+  } else {
+    card.classList.remove('open');
+    head.setAttribute('aria-expanded','false');
+    body.style.maxHeight = null;
+  }
+}
+
+// Used by the hourbar segments and checkpoint markers in "Cronograma":
+// opens the matching unit card and scrolls it into view.
+function jumpToCard(idx){
+  const card = cardEls[idx];
+  if(!card) return;
+  card.style.display = '';
+  if(searchInput) searchInput.value = '';
+  document.querySelectorAll('.unit-card').forEach(c=> c.style.display = '');
+  if(noResults) noResults.style.display = 'none';
+  setOpen(card, true);
+  card.scrollIntoView({behavior:'smooth', block:'center'});
+  card.classList.add('flash');
+  setTimeout(()=> card.classList.remove('flash'), 1200);
+}
+
+DATA.forEach((d, idx)=>{
+  const card = document.createElement('div');
+  card.className = 'unit-card' + (d.kind==='exam' ? ' exam-card' : '');
+  card.id = 'unit-card-' + idx;
+  card.dataset.search = (d.title + ' ' + d.items.map(i=>i[1]).join(' ')).toLowerCase();
+
+  const itemsHtml = d.items.map(([tag,text,hrs])=>`
+    <div class="item-row">
+      <span class="item-tag">${tag}</span>
+      <span class="item-text">${text}</span>
+      <span class="item-hours">${hrs}h</span>
+    </div>`).join('');
+
+  card.innerHTML = `
+    <button class="unit-head" aria-expanded="false">
+      <span class="unit-num">${d.num}</span>
+      <span class="unit-title">${d.title}</span>
+      <span class="unit-hours">${d.hours}h</span>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <div class="unit-body">
+      <div class="unit-body-inner">${itemsHtml}</div>
+    </div>`;
+
+  const head = card.querySelector('.unit-head');
+  head.addEventListener('click', ()=> setOpen(card, !card.classList.contains('open')));
+
+  listEl.appendChild(card);
+  cardEls.push(card);
+});
+
+// expand / collapse all
+document.getElementById('expandAll').addEventListener('click', ()=>{
+  cardEls.forEach(card=> setOpen(card, true));
+});
+document.getElementById('collapseAll').addEventListener('click', ()=>{
+  cardEls.forEach(card=> setOpen(card, false));
+});
+
+// search filter
+const searchInput = document.getElementById('unitSearch');
+const noResults = document.getElementById('noResults');
+searchInput.addEventListener('input', ()=>{
+  const q = searchInput.value.trim().toLowerCase();
+  let visible = 0;
+  document.querySelectorAll('.unit-card').forEach(card=>{
+    const match = !q || card.dataset.search.includes(q);
+    card.style.display = match ? '' : 'none';
+    if(match) visible++;
+  });
+  noResults.style.display = visible === 0 ? 'block' : 'none';
+});
+
+// active nav highlighting
+const navLinks = Array.from(document.querySelectorAll('nav.subnav a'));
+const sections = navLinks.map(a=>document.querySelector(a.getAttribute('href')));
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    const id = '#' + entry.target.id;
+    const link = navLinks.find(a=>a.getAttribute('href')===id);
+    if(!link) return;
+    if(entry.isIntersecting){
+      navLinks.forEach(a=>a.classList.remove('active'));
+      link.classList.add('active');
+    }
+  });
+}, {rootMargin:'-40% 0px -55% 0px'});
+sections.forEach(s=>{ if(s) obs.observe(s); });
+</script>
+</body>
+</html>
